@@ -20,7 +20,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_select 'ul li', text: "Password is too short (minimum is 6 characters)"
   end
 
-  test "valid signup submission" do
+  test "valid signup information" do
     get signup_path
     assert_difference 'User.count', 1 do
       post users_path, params: { user: { name:  "Example User",
@@ -30,6 +30,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     end
     follow_redirect!
     assert_template 'users/show'
+    assert is_logged_in?
     assert_not flash.empty?
     assert_select 'div.alert-success', text: "Welcome to the Sample App!"
     get @user
